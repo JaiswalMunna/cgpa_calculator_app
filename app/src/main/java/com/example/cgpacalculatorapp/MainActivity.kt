@@ -3,38 +3,45 @@ package com.example.cgpacalculatorapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cgpacalculatorapp.ui.theme.CgpaCalculatorAppTheme
+
+data class Semester(val grade: String,val credit: Int)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +56,28 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CGPA(){
+fun CGPA(semester: MutableList<Semester>){
+
+val scrollState= rememberScrollState()
+
+    var grade1 by remember { mutableStateOf("") }
+    var credit1 by remember { mutableStateOf<Int?>(null) }
+    var grade2 by remember { mutableStateOf("") }
+    var credit2 by remember { mutableStateOf<Int?>(null) }
+    var grade3 by remember { mutableStateOf("") }
+    var credit3 by remember { mutableStateOf<Int?>(null) }
+    var grade4 by remember { mutableStateOf("") }
+    var credit4 by remember { mutableStateOf<Int?>(null) }
+    var grade5 by remember { mutableStateOf("") }
+    var credit5 by remember { mutableStateOf<Int?>(null) }
+    var grade6 by remember { mutableStateOf("") }
+    var credit6 by remember { mutableStateOf<Int?>(null) }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 10.dp, vertical = 10.dp)
+            .verticalScroll(scrollState)
     ) {
         Text(
             text = "Hi, this is your app which will calculate your grade into cgpa",
@@ -66,17 +91,120 @@ fun CGPA(){
                 fontFamily = FontFamily(Font(R.font.poppins_semibold))
             )
         )
-        Spacer(modifier = Modifier.padding(top = 10.dp))
-
         subjectText(Subject = "Subject 1")
+        subjectGrade(grade1) {grade1=it}
+        subjectCreditPoint(credit1) {credit1=it}
 
-        Spacer(modifier = Modifier.padding(top = 10.dp))
+        subjectText(Subject = "Subject 2")
+        subjectGrade(grade2) {grade2=it}
+        subjectCreditPoint(credit2) {credit2=it}
 
-        subjectNameText(grade = "Enter your grade", onValueChange = {})
+        subjectText(Subject = "Subject 3")
+        subjectGrade(grade3) {grade3=it}
+        subjectCreditPoint(credit3) {credit3=it}
 
+        subjectText(Subject = "Subject 4")
+        subjectGrade(grade4) {grade4=it}
+        subjectCreditPoint(credit4) {credit4=it}
+
+        subjectText(Subject = "Subject 5")
+        subjectGrade(grade5) {grade5=it}
+        subjectCreditPoint(credit5) {credit5=it}
+
+        subjectText(Subject = "Subject 6")
+        subjectGrade(grade6) {grade6=it}
+        subjectCreditPoint(credit6) {credit6=it}
+
+        Row() {
+           Column(
+               modifier = Modifier.fillMaxHeight(),
+               verticalArrangement = Arrangement.SpaceBetween
+           ) {
+               Button(onClick = {
+                val semester=Semester(grade1,credit1?:0)
+                   val totalCredit=Semester.
+
+               }, colors = ButtonDefaults.buttonColors(
+                   Color(0xFF7E57C2)), shape = RoundedCornerShape(15.dp)
+               )
+               {
+                   Text(text = "Calculate CGPA", color = Color.White)
+               }
+               Spacer(modifier = Modifier.padding(10.dp))
+               Surface(
+                   modifier = Modifier
+                       .width(150.dp)
+                       .wrapContentHeight(), 
+                   color = Color(0xFF263238), 
+                   shape = RoundedCornerShape(15.dp)
+               )
+               {
+                   Text(
+                       modifier = Modifier.padding(start = 10.dp),
+                       text = "Your all time\n CGPA:",
+                       style = TextStyle(
+                           fontFamily = FontFamily(Font(R.font.poppins_medium)),
+                           fontSize = 16.sp,
+                           color = Color.White
+                       )
+                   )
+               }
+
+           }
+           // Spacer(modifier = Modifier.padding(start = 10.dp))
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 10.dp)
+                        .height(200.dp),
+                    color = Color(0xFF263238),
+                    shape = RoundedCornerShape(15.dp)
+                ) {
+                    Column() {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(), 
+                            textAlign = TextAlign.Center,
+                            text = "Previouse Semester:",
+                            style = TextStyle(
+                                fontFamily = FontFamily(Font(R.font.poppins_medium)),
+                                fontSize = 16.sp,
+                                color = Color.White
+                            )
+                        )
+                        Text(
+                            text = "Grade: \n Credit: ",
+                            style = TextStyle(
+                                color = Color.White,
+                                fontFamily = FontFamily(Font(R.font.poppins_semibold)),
+                                fontSize = 16.sp,
+                                ),
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            )
+                    }
+
+                }
+
+        }
+
+//        subjectText(Subject = "Subject 1")
+//        subjectInput(
+//            input = "Enter your grade",
+//            label = "Enter Grade",
+//            onValueChange = {}
+//            )
+//        subjectInput(
+//            input = 3.0,  // Float input for credit points
+//            label = "Enter Credit Points",
+//            onValueChange = {}
+//        )
     }
 }
 
+//@Composable
+//fun Spacer8dp(){
+//    Spacer(modifier = Modifier.padding(top = 10.dp))
+//}
 
 @Preview(showBackground = true)
 @Composable
@@ -104,7 +232,7 @@ fun subjectText( Subject:String){
 //Subject Name
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun subjectNameText(grade: String, onValueChange: (String) -> Unit) {
+fun subjectGrade(grade: String, onValueChange: (String) -> Unit) {
     TextField(
         value = grade,
         onValueChange = { text -> onValueChange(text) },
@@ -113,37 +241,96 @@ fun subjectNameText(grade: String, onValueChange: (String) -> Unit) {
             .height(60.dp),
         label = { Text(text = "Enter grade", color = Color.White) },
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent, // new color scheme for the container background
+            //containerColor = Color.Transparent, // new color scheme for the container background
+            containerColor=Color(0xFF7E57C2),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             focusedLabelColor = Color.White, // Label color when focused
             unfocusedLabelColor = Color.LightGray // Label color when unfocused
-        ),
+
+        ), shape = RoundedCornerShape(15.dp),
+        textStyle = TextStyle(fontSize = 12.sp, color = Color.White)
     )
+    Spacer(modifier = Modifier.padding(10.dp))
 }
 
+//Subject Name
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun subjectCreditPoint(credit: Int?, onValueChange: (Int?) -> Unit) {
+    TextField(
+        value = credit?.toString()?:"",
+        onValueChange = { text -> onValueChange(text.toIntOrNull()) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        label = { Text(text = "Enter Credit Points", color = Color.Black, fontFamily = FontFamily(Font(R.font.poppins_semibold))) },
+        colors = TextFieldDefaults.textFieldColors(
+            //containerColor = Color.Transparent, // new color scheme for the container background
+            containerColor=Color(0xFF7D8CCED),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedLabelColor = Color.White, // Label color when focused
+            unfocusedLabelColor = Color.LightGray // Label color when unfocused
 
+        ), shape = RoundedCornerShape(15.dp),
+        textStyle = TextStyle(fontSize = 12.sp, color = Color.Black, fontFamily = FontFamily(Font(R.font.poppins_semibold)))
+    )
+    Spacer(modifier = Modifier.padding(10.dp))
+}
 
-
-//Subject Grade
-
+//combination on above two function
+//@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
-//fun textField(){
-//    var valueOfField by remember {
-//        mutableStateOf(TextFieldValue(""))
+//fun subjectInput(
+//    input: Any,            // Accepts both String and Float types
+//    label: String,         // Label for the TextField
+//    onValueChange: (String) -> Unit  // Callback for input change
+//) {
+//    val textValue = when (input) {
+//        is String -> input  // Handle String input
+//        is Float -> input.toString()  // Handle Float input
+//        else -> throw IllegalArgumentException("Unsupported data type")
 //    }
-//    Box (contentAlignment = Alignment.Center,
-//        modifier = Modifier.fillMaxSize()
-//    ){
-//        TextField(value =valueOfField, onValueChange = {
-//            valueOfField=it
-//        },
-//            label = {Text(text = "Name:")} ,
-//            placeholder = { Text(text = "Enter your name:")},//placeholder
-//            leadingIcon = { Icon(Icons.Default.Person,contentDescription=null) },//icon in starting
-//            trailingIcon = { Icon(Icons.Default.Info, contentDescription = null) }, //icon in ending
-//            singleLine = true, //the text will contain single line
-//        )
+//
+//    val textStyle = when (input) {
+//        is String -> TextStyle(fontSize = 12.sp, color = Color.White)
+//        is Float -> TextStyle(fontSize = 12.sp, color = Color.Black, fontFamily = FontFamily(Font(R.font.poppins_semibold)))
+//        else -> TextStyle.Default
 //    }
+//
+//    val backgroundColor = when (input) {
+//        is String -> Color(0xFF7E57C2)  // Background for grade input
+//        is Float -> Color(0xFF7D8CCED)  // Background for credit points input
+//        else -> Color.Transparent
+//    }
+//
+//    val labelColor = when (input) {
+//        is String -> Color.White  // Label color for grade
+//        is Float -> Color.Black    // Label color for credit points
+//        else -> Color.LightGray
+//    }
+//
+//    TextField(
+//        value = textValue,
+//        onValueChange = { text -> onValueChange(text) },
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(60.dp),
+//        label = { Text(text = label, color = labelColor) },
+//        colors = TextFieldDefaults.textFieldColors(
+//            containerColor = backgroundColor,
+//            focusedIndicatorColor = Color.Transparent,
+//            unfocusedIndicatorColor = Color.Transparent,
+//            focusedLabelColor = labelColor,
+//            unfocusedLabelColor = Color.LightGray
+//        ),
+//        shape = RoundedCornerShape(15.dp),
+//        textStyle = textStyle,
+//
+//    )
+//    Spacer(modifier = Modifier.padding(8.dp))
 //}
+
+
 
