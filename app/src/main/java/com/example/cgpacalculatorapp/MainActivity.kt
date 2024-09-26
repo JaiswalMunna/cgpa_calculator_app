@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cgpacalculatorapp.ui.theme.CgpaCalculatorAppTheme
 
-data class Semester(val grade: String,val credit: Int)
+data class Semester(val grade: String,val credit: Double)
 
 class MainActivity : ComponentActivity() {
     private var semesters:MutableList<Semester> = mutableListOf()
@@ -62,17 +62,17 @@ fun CGPA(semesters: MutableList<Semester>){
 val scrollState= rememberScrollState()
 
     var grade1 by remember { mutableStateOf("") }
-    var credit1 by remember { mutableStateOf<Int?>(null) }
+    var credit1 by remember { mutableStateOf<Double?>(null) }
     var grade2 by remember { mutableStateOf("") }
-    var credit2 by remember { mutableStateOf<Int?>(null) }
+    var credit2 by remember { mutableStateOf<Double?>(null) }
     var grade3 by remember { mutableStateOf("") }
-    var credit3 by remember { mutableStateOf<Int?>(null) }
+    var credit3 by remember { mutableStateOf<Double?>(null) }
     var grade4 by remember { mutableStateOf("") }
-    var credit4 by remember { mutableStateOf<Int?>(null) }
+    var credit4 by remember { mutableStateOf<Double?>(null) }
     var grade5 by remember { mutableStateOf("") }
-    var credit5 by remember { mutableStateOf<Int?>(null) }
+    var credit5 by remember { mutableStateOf<Double?>(null) }
     var grade6 by remember { mutableStateOf("") }
-    var credit6 by remember { mutableStateOf<Int?>(null) }
+    var credit6 by remember { mutableStateOf<Double?>(null) }
     var cgpa by remember { mutableStateOf(0.0) }
 
     Column(
@@ -82,17 +82,18 @@ val scrollState= rememberScrollState()
             .verticalScroll(scrollState)
     ) {
         Text(
-            text = "Hi, this is your app which will calculate your grade into cgpa",
+            text = "Hi, This is your app which will calculate your grade into cgpa.\nYou have to enter all grade and credit points",
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
             style = TextStyle(
-                textAlign = TextAlign.Center,
-                fontSize =25.sp,
+                textAlign = TextAlign.Start,
+                fontSize =20.sp,
                 color = Color.DarkGray,
                 fontFamily = FontFamily(Font(R.font.poppins_semibold))
             )
         )
+        Spacer(modifier = Modifier.padding(10.dp))
         subjectText(Subject = "Subject 1")
         subjectGrade(grade1) {grade1=it}
         subjectCreditPoint(credit1) {credit1=it}
@@ -123,7 +124,7 @@ val scrollState= rememberScrollState()
                verticalArrangement = Arrangement.SpaceBetween
            ) {
                Button(onClick = {
-                val semester=Semester(grade1,credit1?:0)
+                   val semester=Semester(grade1,credit1?:0.0)
                    semesters.add(semester)
                    val totalCredit=semesters.sumOf{it.credit}
                    val totalGrade=semesters.sumOf{calculateGradePoint(it.grade,it.credit)}
@@ -229,7 +230,7 @@ val scrollState= rememberScrollState()
     }
 }
 
-fun calculateGradePoint(grade: String, credit: Int):Double {
+fun calculateGradePoint(grade: String, credit: Double):Double {
 return when (grade.uppercase()){
      "A"->4.0
      "B"->3.2
@@ -295,10 +296,10 @@ fun subjectGrade(grade: String, onValueChange: (String) -> Unit) {
 //Subject Name
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun subjectCreditPoint(credit: Int?, onValueChange: (Int?) -> Unit) {
+fun subjectCreditPoint(credit: Double?, onValueChange: (Double?) -> Unit) {
     TextField(
         value = credit?.toString()?:"",
-        onValueChange = { text -> onValueChange(text.toIntOrNull()) },
+        onValueChange = { text -> onValueChange(text.toDoubleOrNull()) },
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp),
@@ -370,235 +371,3 @@ fun subjectCreditPoint(credit: Int?, onValueChange: (Int?) -> Unit) {
 //    Spacer(modifier = Modifier.padding(8.dp))
 //}
 
-
-
-
-
-//package com.example.cgpacalculatorapp
-//
-//import android.os.Bundle
-//import androidx.activity.ComponentActivity
-//import androidx.activity.compose.setContent
-//import androidx.compose.foundation.layout.*
-//import androidx.compose.foundation.rememberScrollState
-//import androidx.compose.foundation.shape.RoundedCornerShape
-//import androidx.compose.foundation.verticalScroll
-//import androidx.compose.material3.Button
-//import androidx.compose.material3.ButtonDefaults
-//import androidx.compose.material3.ExperimentalMaterial3Api
-//import androidx.compose.material3.Surface
-//import androidx.compose.material3.Text
-//import androidx.compose.material3.TextField
-//import androidx.compose.material3.TextFieldDefaults
-//import androidx.compose.runtime.*
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.graphics.Color
-//import androidx.compose.ui.text.TextStyle
-//import androidx.compose.ui.text.font.Font
-//import androidx.compose.ui.text.font.FontFamily
-//import androidx.compose.ui.text.style.TextAlign
-//import androidx.compose.ui.unit.dp
-//import androidx.compose.ui.unit.sp
-//import com.example.cgpacalculatorapp.ui.theme.CgpaCalculatorAppTheme
-//
-//data class Semester(val grade: String, val credit: Int)
-//
-//class MainActivity : ComponentActivity() {
-//    private var semester: MutableList<Semester> = mutableListOf()
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContent {
-//            CgpaCalculatorAppTheme {
-//                CGPA(semester)
-//            }
-//        }
-//    }
-//}
-//
-//@Composable
-//fun CGPA(semester: MutableList<Semester>) {
-//    val scrollState = rememberScrollState()
-//
-//    var grade1 by remember { mutableStateOf("") }
-//    var credit1 by remember { mutableStateOf<Int?>(null) }
-//    var cgpa by remember { mutableStateOf(0.0) }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(horizontal = 10.dp, vertical = 10.dp)
-//            .verticalScroll(scrollState)
-//    ) {
-//        Text(
-//            text = "Hi, this is your app which will calculate your grade into CGPA",
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .align(Alignment.CenterHorizontally),
-//            style = TextStyle(
-//                textAlign = TextAlign.Center,
-//                fontSize = 25.sp,
-//                color = Color.DarkGray,
-//                fontFamily = FontFamily(Font(R.font.poppins_semibold))
-//            )
-//        )
-//
-//        subjectText(Subject = "Subject 1")
-//        subjectGrade(grade1) { grade1 = it }
-//        subjectCreditPoint(credit1) { credit1 = it }
-//
-//        Row {
-//            Column(
-//                modifier = Modifier.fillMaxHeight(),
-//                verticalArrangement = Arrangement.SpaceBetween
-//            ) {
-//                Button(
-//                    onClick = {
-//                        val newSemester = Semester(grade1, credit1 ?: 0)
-//                        semester.add(newSemester)
-//
-//                        val totalCredit = semester.sumOf { it.credit }
-//                        val totalGrade = semester.sumOf { calculateGradePoint(it.grade, it.credit) }
-//
-//                        cgpa = if (totalCredit > 0) {
-//                            totalGrade / totalCredit.toDouble()
-//                        } else {
-//                            0.0
-//                        }
-//
-//                        grade1 = ""
-//                        credit1 = null
-//                    },
-//                    colors = ButtonDefaults.buttonColors(Color(0xFF7E57C2))
-//                ) {
-//                    Text(text = "Calculate CGPA", color = Color.White)
-//                }
-//
-//                Spacer(modifier = Modifier.padding(10.dp))
-//
-//                Surface(
-//                    modifier = Modifier
-//                        .width(150.dp)
-//                        .wrapContentHeight(),
-//                    color = Color(0xFF263238)
-//                ) {
-//                    Text(
-//                        modifier = Modifier.padding(start = 10.dp),
-//                        text = "Your CGPA: $cgpa",
-//                        style = TextStyle(
-//                            fontFamily = FontFamily(Font(R.font.poppins_medium)),
-//                            fontSize = 16.sp,
-//                            color = Color.White
-//                        )
-//                    )
-//                }
-//            }
-//        }
-//
-//        Surface(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(start = 10.dp)
-//                .height(200.dp),
-//            color = Color(0xFF263238)
-//        ) {
-//            Column {
-//                Text(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    textAlign = TextAlign.Center,
-//                    text = "Previous Semesters:",
-//                    style = TextStyle(
-//                        fontFamily = FontFamily(Font(R.font.poppins_medium)),
-//                        fontSize = 16.sp,
-//                        color = Color.White
-//                    )
-//                )
-//
-//                if (semester.isNotEmpty()) {
-//                    for (s in semester) {
-//                        Text(
-//                            text = "Grade: ${s.grade} \n Credit: ${s.credit}",
-//                            style = TextStyle(
-//                                color = Color.White,
-//                                fontFamily = FontFamily(Font(R.font.poppins_semibold)),
-//                                fontSize = 16.sp,
-//                            ),
-//                            modifier = Modifier.fillMaxWidth(),
-//                            textAlign = TextAlign.Center,
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//fun calculateGradePoint(grade: String, credit: Int): Double {
-//    return when (grade.uppercase()) {
-//        "A" -> 4.0
-//        "B" -> 3.2
-//        "C" -> 2.6
-//        "D" -> 1.8
-//        else -> 0.0
-//    } * credit
-//}
-//
-//@Composable
-//fun subjectText(Subject: String) {
-//    Text(
-//        text = Subject,
-//        modifier = Modifier.fillMaxWidth(),
-//        style = TextStyle(
-//            fontSize = 18.sp,
-//            color = Color.DarkGray,
-//            fontFamily = FontFamily(Font(R.font.poppins_medium))
-//        )
-//    )
-//}
-//
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun subjectGrade(grade: String, onValueChange: (String) -> Unit) {
-//    TextField(
-//        value = grade,
-//        onValueChange = { text -> onValueChange(text) },
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(60.dp),
-//        label = { Text(text = "Enter grade", color = Color.White) },
-//        colors = TextFieldDefaults.textFieldColors(
-//            containerColor = Color(0xFF7E57C2),
-//            focusedIndicatorColor = Color.Transparent,
-//            unfocusedIndicatorColor = Color.Transparent,
-//            focusedLabelColor = Color.White,
-//            unfocusedLabelColor = Color.LightGray
-//        ),
-//        shape = RoundedCornerShape(15.dp),
-//        textStyle = TextStyle(fontSize = 12.sp, color = Color.White)
-//    )
-//    Spacer(modifier = Modifier.padding(10.dp))
-//}
-//
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun subjectCreditPoint(credit: Int?, onValueChange: (Int?) -> Unit) {
-//    TextField(
-//        value = credit?.toString() ?: "",
-//        onValueChange = { text -> onValueChange(text.toIntOrNull()) },
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(60.dp),
-//        label = { Text(text = "Enter Credit Points", color = Color.Black) },
-//        colors = TextFieldDefaults.textFieldColors(
-//            containerColor = Color(0xFF7D8CCED),
-//            focusedIndicatorColor = Color.Transparent,
-//            unfocusedIndicatorColor = Color.Transparent,
-//            focusedLabelColor = Color.Black,
-//            unfocusedLabelColor = Color.Black
-//        ),
-//        shape = RoundedCornerShape(15.dp),
-//        textStyle = TextStyle(fontSize = 12.sp, color = Color.Black)
-//    )
-//    Spacer(modifier = Modifier.padding(10.dp))
-//}
